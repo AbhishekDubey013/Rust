@@ -7,13 +7,15 @@
 pragma solidity ^0.8.23;
 
 interface ICounter {
-    function number() external view returns (uint256);
+    function numberMeet() external view returns (uint256);
 
-    function setNumber(uint256 new_number) external;
+    function setNumberMeet(uint256 new_number) external;
 
-    function mulNumber(uint256 new_number) external;
+    function mulNumberMeet(uint256 new_number) external;
 
-    function addNumber(uint256 new_number) external;
+    function addNumberMeet(uint256 new_number) external;
 
-    function increment() external;
+    function incrementMeet() external;
+
+    function isCacheable() external view returns (bool);
 }
