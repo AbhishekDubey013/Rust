@@ -14,6 +14,7 @@ use stylus_sdk::{
 };
 use alloy_sol_types::sol;
 use crate::erc721::{Erc721, Erc721Params};
+use stylus_cache_sdk::{is_contract_cacheable};
 
 // Interfaces for the Art contract and the ERC20 contract
 sol_interface! {
@@ -63,14 +64,14 @@ pub enum StylusNFTError {
 #[inherit(Erc721<StylusNFTParams>)]
 impl StylusNFT {
     /// Mints an NFT, but does not call onErc712Received
-    pub fn mint(&mut self) -> Result<(), Vec<u8>> {
+    pub fn mint_abhishek(&mut self) -> Result<(), Vec<u8>> {
         let minter = msg::sender();
         self.erc721.mint(minter)?;
         Ok(())
     }
 
     /// Mints an NFT to the specified address, and does not call onErc712Received
-    pub fn mint_to(&mut self, to: Address) -> Result<(), Vec<u8>> {
+    pub fn mint_to_abhishek(&mut self, to: Address) -> Result<(), Vec<u8>> {
         self.erc721.mint(to)?;
         Ok(())
     }
@@ -90,7 +91,7 @@ impl StylusNFT {
     }
 
     /// Burns an NFT
-    pub fn burn(&mut self, token_id: U256) -> Result<(), Vec<u8>> {
+    pub fn burn_abhishek(&mut self, token_id: U256) -> Result<(), Vec<u8>> {
         // This function checks that msg::sender() owns the specified token_id
         self.erc721.burn(msg::sender(), token_id)?;
         Ok(())
@@ -111,7 +112,7 @@ impl StylusNFT {
     }
 
     /// Initialize program - simplified version without ERC20
-    pub fn initialize(&mut self, art_contract_address: Address) -> Result<(), StylusNFTError> {
+    pub fn initialize_abhishek(&mut self, art_contract_address: Address) -> Result<(), StylusNFTError> {
         let current_art_contract = self.art_contract_address.get();
         if !current_art_contract.is_zero() {
             return Err(StylusNFTError::AlreadyInitialized(AlreadyInitialized {}));
@@ -131,5 +132,10 @@ impl StylusNFT {
     /// Getter for the art contract address
     pub fn get_art_contract_address(&mut self) -> Result<Address, StylusNFTError> {
         Ok(self.art_contract_address.get())
+    }
+
+    /// Check if contract is cacheable
+    pub fn is_cacheable(&self) -> bool {
+        is_contract_cacheable()
     }
 }
