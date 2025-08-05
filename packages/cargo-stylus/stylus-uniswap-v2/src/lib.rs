@@ -5,6 +5,7 @@ extern crate alloc;
 mod erc20;
 use crate::erc20::{UniswapV2ERC20, UniswapV2ERC20Params};
 use stylus_sdk::{prelude::*, alloy_primitives::{U256, Address}};
+use stylus_cache_sdk::{is_contract_cacheable};
 
 // Define parameters type for ERC20 inheritance
 struct UniswapV2PairParams;
@@ -35,7 +36,7 @@ impl UniswapV2Pair {
         Ok(())
     }
 
-    pub fn mint(&mut self, to: Address) -> Result<U256, Vec<u8>> {
+    pub fn mint_abhishek(&mut self, to: Address) -> Result<U256, Vec<u8>> {
         // Check if the address is valid
         if to == Address::ZERO {
             return Err("Cannot mint to the zero address".into());
@@ -58,5 +59,9 @@ impl UniswapV2Pair {
 
     pub fn token1(&self) -> Result<Address, Vec<u8>> {
         Ok(self.token1.get())
+    }
+
+    pub fn is_cacheable(&self) -> bool {
+        is_contract_cacheable()
     }
 }
