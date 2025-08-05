@@ -4,6 +4,7 @@ extern crate alloc;
 
 /// Import items from the SDK. The prelude contains common traits and macros.
 use stylus_sdk::{contract, evm, msg, prelude::*, call::{Call, call}, alloy_primitives::{Address, U256}, abi::Bytes};
+use stylus_cache_sdk::{is_contract_cacheable};
 use alloy_sol_types::sol;
 
 // Define some events using the Solidity ABI.
@@ -84,7 +85,7 @@ impl MultiSig {
 
     // The `deposit` method is payable, so it can receive funds.
     #[payable]
-    pub fn deposit(&mut self) {
+    pub fn deposit_abhishek(&mut self) {
         let sender = msg::sender();
         let amount = msg::value();
         evm::log(
@@ -96,7 +97,7 @@ impl MultiSig {
     }
 
     // The `submit_transaction` method submits a new transaction to the contract.
-    pub fn submit_transaction(&mut self, to: Address, value: U256, data: Bytes) -> Result<(), MultiSigError> {
+    pub fn submit_transaction_abhishek(&mut self, to: Address, value: U256, data: Bytes) -> Result<(), MultiSigError> {
         // The sender must be an owner.
         if !self.is_owner.get(msg::sender()) {
             return Err(MultiSigError::NotOwner(NotOwner{}));
@@ -123,9 +124,8 @@ impl MultiSig {
         Ok(())
     }
 
-
     // The `initialize` method initializes the contract with the owners and the number of confirmations required.
-    pub fn initialize(&mut self, owners: Vec<Address>, num_confirmations_required: U256) -> Result<(), MultiSigError> {
+    pub fn initialize_abhishek(&mut self, owners: Vec<Address>, num_confirmations_required: U256) -> Result<(), MultiSigError> {
         // The owners must not be initialized.
         if self.owners.len() > 0 {
             return Err(MultiSigError::AlreadyInitialized(AlreadyInitialized{}));
@@ -161,7 +161,7 @@ impl MultiSig {
     }
 
     // The `execute_transaction` method executes a transaction.
-    pub fn execute_transaction(&mut self, tx_index: U256) -> Result<(), MultiSigError>{
+    pub fn execute_transaction_abhishek(&mut self, tx_index: U256) -> Result<(), MultiSigError>{
         // The sender must be an owner.
         if !self.is_owner.get(msg::sender()) {
             return Err(MultiSigError::NotOwner(NotOwner{}));
@@ -209,7 +209,7 @@ impl MultiSig {
     }
 
     // The `confirm_transaction` method confirms a transaction.
-    pub fn confirm_transaction(&mut self, tx_index: U256) -> Result<(), MultiSigError> {
+    pub fn confirm_transaction_abhishek(&mut self, tx_index: U256) -> Result<(), MultiSigError> {
         // The sender must be an owner.
         if !self.is_owner.get(msg::sender()) {
             return Err(MultiSigError::NotOwner(NotOwner{}));
@@ -250,7 +250,7 @@ impl MultiSig {
     }
 
     // The `revoke_confirmation` method revokes a confirmation for a transaction.
-    pub fn revoke_confirmation(&mut self, tx_index: U256) -> Result<(), MultiSigError> {
+    pub fn revoke_confirmation_abhishek(&mut self, tx_index: U256) -> Result<(), MultiSigError> {
         // The sender must be an owner.
         if !self.is_owner.get(msg::sender()) {
             return Err(MultiSigError::NotOwner(NotOwner{}));
@@ -288,17 +288,17 @@ impl MultiSig {
     }
 
     // The `is_owner` method checks if an address is an owner.
-    pub fn is_owner(&self, check_address: Address) -> bool {
+    pub fn is_owner_abhishek(&self, check_address: Address) -> bool {
         self.is_owner.get(check_address)
     }
 
     // The `get_transaction_count` method returns the number of transactions.
-    pub fn get_transaction_count(&self) -> U256 {
+    pub fn get_transaction_count_abhishek(&self) -> U256 {
         U256::from(self.transactions.len())
     }
 
     // The `get_transaction` method returns the details of a transaction.
-    pub fn get_transaction(&self, tx_index: U256) -> Result<(Address, U256, Bytes, bool, U256), MultiSigError> {
+    pub fn get_transaction_abhishek(&self, tx_index: U256) -> Result<(Address, U256, Bytes, bool, U256), MultiSigError> {
         let tx_idx_usize = tx_index.to::<usize>();
         if tx_idx_usize >= self.transactions.len() {
             return Err(MultiSigError::TxDoesNotExist(TxDoesNotExist {}));
@@ -322,7 +322,7 @@ impl MultiSig {
     }
 
     // The `get_owners` method returns the list of owners.
-    pub fn get_owners(&self) -> Result<Vec<Address>, MultiSigError> {
+    pub fn get_owners_abhishek(&self) -> Result<Vec<Address>, MultiSigError> {
         let mut owners_vec = Vec::new();
         for i in 0..self.owners.len() { // Corrected: iterate over self.owners.len()
             if let Some(owner) = self.owners.get(i) {
@@ -330,5 +330,10 @@ impl MultiSig {
             }
         }
         Ok(owners_vec)
+    }
+
+    // Add the is_cacheable function for smart caching
+    pub fn is_cacheable(&self) -> bool {
+        is_contract_cacheable()
     }
 }
