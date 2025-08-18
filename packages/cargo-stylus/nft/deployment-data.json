@@ -1,0 +1,8 @@
+{
+  "deployment_transaction": "0xea40fd150aa88a16110ca366c0c177d84f73063b2af148d2238ff7af9f5e0ae5",
+  "rpc_endpoint": "https://sepolia-rollup.arbitrum.io/rpc",
+  "cargo_stylus_version": "0.5.6",
+  "repository_url": "https://github.com/AbhishekDubey013/Rust.git",
+  "commit": "23d509dc8b5233f384a58a561448d5dc5be96ba4",
+  "path_prefix": "packages/cargo-stylus/nft"
+} 
